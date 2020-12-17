@@ -2,6 +2,26 @@
 
 const pause = document.getElementById('pause');
 let audio_keys = document.getElementsByClassName('keys');
+
+function playSound(audio_track){
+    [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the nodelist which we can then loop through    
+        if(e!== audio_track){
+            e.classList.remove('tracks');
+            e.pause();
+            e.currentTime = 0;  
+        }
+        
+    })
+
+    audio_track.classList.toggle('tracks')
+    if (audio_track.classList.contains('tracks')){
+        audio_track.play();
+    }
+    else{
+        audio_track.pause();
+    }; 
+}
+
 function keyPressSound (e){
     // console.log(e);//this gives us the entire keypress object
     //console.log(e.keyCode);//this gives us just the ascii character of the key that was pressed
@@ -17,32 +37,8 @@ function keyPressSound (e){
     
     key.classList.add('playing');
 
-    [...audio.parentElement.children].forEach(function (e) {//the spread operator creates an array from the nodelist which we can then loop through    
-        if(e!== audio){
-            e.classList.remove('tracks');
-            e.pause();
-            e.currentTime = 0;  
-        }
-        
-    })
-
-    audio.classList.toggle('tracks')
-    if (audio.classList.contains('tracks')){
-        audio.play();
-    }
-    else{
-        audio.pause();
-    };
-    //audio.play();
-
-
-    // if (audio.classList.contains('tracks')){
-    //     audio.play();
-    // }
-    // else{
-    //     audio.pause();
-    // }
-    // 
+    playSound(audio);
+    
 }
 
 function clickPlaySound (e){
@@ -50,14 +46,10 @@ function clickPlaySound (e){
     const audio_2 = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key_2 = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio_2) return;
-    audio_2.play();
+    //audio_2.play();
     key_2.parentNode.classList.add('playing');
     
-    [...audio_2.parentElement.children].forEach(function (el) {//the spread operator creates an array from the nodelist which we can then loop through
-        if(el!== audio_2) el.classList.remove('tracks');
-    })
-    audio_2.classList.add('tracks');
-    //console.log(audio_2.parentElement.children);
+    playSound(audio_2);
 }
     
 
