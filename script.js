@@ -25,11 +25,12 @@ function keyPressSound (e){
 }
 
 function clickPlaySound (e){
-    console.log(e.target.innerText)
+    //console.log(e.target.innerText)
     const audio_2 = document.querySelector(`audio[id = "${e.target.innerText}"]`)
-   const key_2 = document.querySelector(`#${e.target.innerText}`)
+   const key_2 = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
    if(!audio_2) return;
    audio_2.play();
+   console.log(key_2);
    key_2.parentNode.classList.add('playing');
    
    [...audio_2.parentElement.children].forEach(function (el) {//the spread operator creates an array from the nodelist which we can then loop through
