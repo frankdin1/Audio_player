@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>JS Drum Kit</title>
+</head>
+<body>
+  <header class="header">
+    <button id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
+    <button id="pause" ><i class="fa fa-pause" aria-hidden="true"></i></button>
+  </header>
+ 
+<!-- data-key is a  data atrribute similar to src or class -->
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd id="A">Beat For Greg</kbd>
+      <!-- <span class="sound">clap</span> -->
+    </div>
+    <div data-key="83" class="key">
+      <kbd id="S">The Sound Of Africa</kbd>
+      <!-- <span class="sound">hihat</span> -->
+    </div>
+    <div data-key="68" class="key">
+      <kbd id="D">Hip Hop Reagea</kbd>
+      <!-- <span class="sound">kick</span> -->
+    </div>
+    <div data-key="70" class="key">
+      <kbd id="F">Dancehall Track</kbd>
+      <!-- <span class="sound">808</span> -->
+    </div>
+    <div data-key="71" class="key">
+      <kbd id="G">Another Dancehall Track</kbd>
+      <!-- <span class="sound">cymbal</span> -->
+    </div>
+    <div data-key="72" class="key">
+      <kbd id="H">Angels sing</kbd>
+      <!-- <span class="sound">openhat</span> -->
+    </div>
+    <div data-key="74" class="key">
+      <kbd id="J">Dreams Of Peace</kbd>
+      <!-- <span class="sound">snare</span> -->
+    </div>
+    <div data-key="75" class="key">
+      <kbd id="K">Yours Faithfully</kbd>
+      <!-- <span class="sound">fx</span> -->
+    </div>
+    <div data-key="76" class="key">
+      <kbd id="L">Hard</kbd>
+      <!-- <span class="sound">percussion</span> -->
+    </div>
+    <div data-key="90" class="key">
+      <kbd id="Z">Gotta Be Good</kbd>
+      <!-- <span class="sound">Electronic African</span> -->
+    </div>
+    <div data-key="76" class="key">
+      <kbd id="L">In My Dreams</kbd>
+      <!-- <span class="sound">percussion</span> -->
+    </div>
+    <div data-key="90" class="key">
+      <kbd id="Z">A Bigger Crowd</kbd>
+      <!-- <span class="sound">Electronic African</span> -->
+    </div>
+   
+  </div>
+
+  <div class="audio-tracks">
+    <audio data-key="65" src="My_Tracks/Beat for Greg.mp3"></audio>
+    <audio id="A" src="My_Tracks/Beat for Greg.mp3"></audio>
+
+    <audio data-key="83" src="My_Tracks/The Sound Of Africa.mp3"></audio>
+    <audio id="S" src="My_Tracks/The Sound Of Africa.mp3"></audio>
+
+    <audio data-key="68" src="My_Tracks/Hip hop reagea.mp3"></audio>
+    <audio id="D" src="My_Tracks/Hip hop reagea.mp3"></audio>
+
+    <audio data-key="70" src="My_Tracks/dancehall 2.mp3"></audio>
+    <audio id="F" src="My_Tracks/dancehall 2.mp3"></audio>
+
+    <audio data-key="71" src="My_Tracks/dancehall5.mp3"></audio>
+    <audio id="G" src="My_Tracks/dancehall5.mp3"></audio>
+
+    <audio data-key="72" src="My_Tracks/Angels sing.wav"></audio>
+    <audio id="H" src="My_Tracks/Angels sing.wav"></audio>
+
+    <audio data-key="74" src="My_Tracks/Dreams of peace 2.wav"></audio>
+    <audio id="J" src="My_Tracks/Dreams of peace 2.wav"></audio>
+
+    <audio data-key="75" src="My_Tracks/Yours faithfully.wav"></audio>
+    <audio id="K" src="My_Tracks/Yours faithfully.wav"></audio>
+
+    <audio data-key="76" src="My_Tracks/Hard.mp3"></audio>
+    <audio id="L" src="My_Tracks/Hard.mp3"></audio>
+
+    <audio data-key="90" src="My_Tracks/Gotta be good.mp3"></audio>
+    <audio id="Z" class="tracks" src="My_Tracks/Gotta be good.mp3"></audio>
+
+    <audio data-key="76" src="My_Tracks/In my dreams.mp3"></audio>
+    <audio id="L" src="My_Tracks/In my dreams.mp3"></audio>
+
+    <audio data-key="90" src="My_Tracks/A Bigger Crowd.wav"></audio>
+    <audio id="Z" class="tracks" src="My_Tracks/A Bigger Crowd.wav"></audio>
+  </div>
+<script rel="text/javascript" src="script.js"></script>
+</body>
+</html>

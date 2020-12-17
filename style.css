@@ -1,0 +1,89 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 10px;
+  background-size: cover; 
+  background-position: center;
+  background-image: url('Talking-drum.png');
+}
+  
+body {
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+.header{
+  width:100%;
+  height: 6rem;
+  background-color: #fff;
+  margin:0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#pause{
+  height: 3rem;
+  width: 4rem;
+  margin:0 auto;
+  border:1px solid black;
+  border-radius: .5rem;
+}
+
+#play{
+  height: 3rem;
+  width: 4rem;
+  margin:0 auto;
+  border:1px solid black;
+  border-radius: .5rem;
+}
+
+.hidden{
+  display:none;
+}
+.keys{
+  width:100rem;
+  height: 100rem;
+  margin:0 auto;
+  
+}
+
+.key {
+  border: .4rem solid grey;
+  border-radius: .5rem;
+  margin: 5rem 5.5rem;
+  font-size: 1.5rem;
+  padding: 4rem 4rem;
+  transition: all .07s ease;
+  width: 14rem;
+  height: 14rem;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  text-shadow: 0 0 .5rem black;
+  float: left;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playing {
+  transform: scale(1.1);
+  border-color: #ff0077;
+  box-shadow: 0 0 1rem #ff0077;
+}
+  
+kbd {
+  font-size: 2rem;
+}
+  
+/* .sound {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+  color: #ffc600;
+} */
