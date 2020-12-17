@@ -1,11 +1,10 @@
 'use strict'
-//now we're listening on the window, but we could also listen 
-//on a div or a class or any other element
+
 const pause = document.getElementById('pause');
 let audio_keys = document.getElementsByClassName('keys');
 function keyPressSound (e){
     // console.log(e);//this gives us the entire keypress object
-    console.log(e.keyCode);//this gives us just the ascii character of the key that was pressed
+    //console.log(e.keyCode);//this gives us just the ascii character of the key that was pressed
     const audio = document.querySelector(`audio[data-key = "${e.keyCode}"]`)
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
     //const key_2 = document.querySelector(`#${e.target.innerText}`)
@@ -15,29 +14,50 @@ function keyPressSound (e){
     if(!audio) return;//this stops the function from running
     //audio.currentTime = 0;//this rewinds the playback to the start every time we hit the key
     //audio.stop();
-    audio.play();
+    
     key.classList.add('playing');
 
-    [...audio.parentElement.children].forEach(function (e) {//the spread operator creates an array from the nodelist which we can then loop through
-        if(e!== audio) e.classList.remove('tracks');
-       })
-       audio.classList.add('tracks');
+    [...audio.parentElement.children].forEach(function (e) {//the spread operator creates an array from the nodelist which we can then loop through    
+        if(e!== audio){
+            e.classList.remove('tracks');
+            e.pause();
+            e.currentTime = 0;  
+        }
+        
+    })
+
+    audio.classList.toggle('tracks')
+    if (audio.classList.contains('tracks')){
+        audio.play();
+    }
+    else{
+        audio.pause();
+    };
+    //audio.play();
+
+
+    // if (audio.classList.contains('tracks')){
+    //     audio.play();
+    // }
+    // else{
+    //     audio.pause();
+    // }
+    // 
 }
 
 function clickPlaySound (e){
     //console.log(e.target.innerText)
     const audio_2 = document.querySelector(`audio[id = "${e.target.innerText}"]`)
-   const key_2 = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
-   if(!audio_2) return;
-   audio_2.play();
-   console.log(key_2);
-   key_2.parentNode.classList.add('playing');
-   
-   [...audio_2.parentElement.children].forEach(function (el) {//the spread operator creates an array from the nodelist which we can then loop through
-    if(el!== audio_2) el.classList.remove('tracks');
-   })
-   audio_2.classList.add('tracks');
-   //console.log(audio_2.parentElement.children);
+    const key_2 = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
+    if(!audio_2) return;
+    audio_2.play();
+    key_2.parentNode.classList.add('playing');
+    
+    [...audio_2.parentElement.children].forEach(function (el) {//the spread operator creates an array from the nodelist which we can then loop through
+        if(el!== audio_2) el.classList.remove('tracks');
+    })
+    audio_2.classList.add('tracks');
+    //console.log(audio_2.parentElement.children);
 }
     
 
