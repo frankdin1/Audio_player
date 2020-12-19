@@ -1,25 +1,56 @@
 'use strict'
 
 const pause = document.getElementById('pause');
+const play = document.getElementById('play');
 let audio_keys = document.getElementsByClassName('keys');
+const keys = document.querySelectorAll('.key');
+let now_playing = 'true';
 
-function playSound(audio_track){
+// function init(){
+//     play.classList.('hidden');
+//     pause.classList.add('hidden');
+// }
+
+function controlSound(audio_track){
+    
+    
+    
+
     [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the nodelist which we can then loop through    
         if(e!== audio_track){
             e.classList.remove('tracks');
             e.pause();
-            e.currentTime = 0;  
+            e.currentTime = 0; 
+             
         }
-        
     })
 
     audio_track.classList.toggle('tracks')
+    
+    //play.classList.toggle('hidden');
+    //pause.classList.toggle('hidden');
+
     if (audio_track.classList.contains('tracks')){
         audio_track.play();
+        now_playing = 'true';
+
     }
     else{
         audio_track.pause();
+        now_playing = 'false';
+        // play.classList.add('hidden');
+        // pause.classList.remove('hidden');
     }; 
+    console.log(now_playing);
+    if (now_playing === 'true'){
+        play.classList.add('hidden');
+        pause.classList.remove('hidden');
+    }
+
+    else{
+        play.classList.remove('hidden');
+        pause.classList.add('hidden');
+    }
 }
 
 function keyPressSound (e){
@@ -37,7 +68,7 @@ function keyPressSound (e){
     
     key.classList.add('playing');
 
-    playSound(audio);
+    controlSound(audio);
     
 }
 
@@ -46,10 +77,10 @@ function clickPlaySound (e){
     const audio_2 = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key_2 = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio_2) return;
-    //audio_2.play();
+    
     key_2.parentNode.classList.add('playing');
     
-    playSound(audio_2);
+    controlSound(audio_2);
 }
     
 
@@ -85,9 +116,6 @@ function removeTransition (e){
     this.classList.remove('playing');
 }
 
-const keys = document.querySelectorAll('.key');
 
 //we use forEach to listen for an event on each key press
 keys.forEach(key => key.addEventListener('transitionend', removeTransition))//the function removeTransition is run when the transition ends
-//now we're listening on the window, but we could also listen 
-//on a div or a class or any other element
