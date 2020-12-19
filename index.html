@@ -6,13 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
-  <title>JS Drum Kit</title>
+  <title>JS Music Portfolio</title>
 </head>
 <body>
   <header class="header">
-    <button id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
-    <button id="pause" ><i class="fa fa-pause" aria-hidden="true"></i></button>
-  </header>
+    <div class="music-controls">
+      <button id="play" class="music-control"><i class="fa fa-play" aria-hidden="true"></i></button>
+      <button id="pause" class="hidden music-control"><i class="fa fa-pause" aria-hidden="true"></i></button>
+      <button id="stop" class="music-control"><i class="fas fa-stop"></i></button>
+    </div>
+    </header>
  
 <!-- data-key is a  data atrribute similar to src or class -->
   <div class="keys">
