@@ -2,14 +2,10 @@
 
 const pause = document.getElementById('pause');
 const play = document.getElementById('play');
+const stop = document.getElementById('stop');
 let audio_keys = document.getElementsByClassName('keys');
 const keys = document.querySelectorAll('.key');
 let now_playing = 'true';
-
-// function init(){
-//     play.classList.('hidden');
-//     pause.classList.add('hidden');
-// }
 
 function controlSound(audio_track){
     
@@ -21,14 +17,10 @@ function controlSound(audio_track){
             e.classList.remove('tracks');
             e.pause();
             e.currentTime = 0; 
-             
         }
     })
 
     audio_track.classList.toggle('tracks')
-    
-    //play.classList.toggle('hidden');
-    //pause.classList.toggle('hidden');
 
     if (audio_track.classList.contains('tracks')){
         audio_track.play();
@@ -38,10 +30,7 @@ function controlSound(audio_track){
     else{
         audio_track.pause();
         now_playing = 'false';
-        // play.classList.add('hidden');
-        // pause.classList.remove('hidden');
     }; 
-    console.log(now_playing);
     if (now_playing === 'true'){
         play.classList.add('hidden');
         pause.classList.remove('hidden');
@@ -93,11 +82,11 @@ function clickPauseSound (){
 //    key_2.parentNode.classList.add('playing');
 }
 
-function keyPauseSound (){
+function clickStopSound (){
     const audio_4 = document.querySelector('.tracks');
-    console.log(audio_4)
     //const key_2 = document.querySelector(`#${e.target.innerText}`)
     audio_4.pause();
+    audio_4.currentTime = 0;
 //    key_2.parentNode.classList.add('playing');
 }
 
@@ -107,6 +96,7 @@ for (let i = 0; i < audio_keys.length; i++){
 window.addEventListener('keydown', keyPressSound);
 // window.addEventListener('click', clickPlaySound);
 pause.addEventListener('click', clickPauseSound);
+stop.addEventListener('click', clickStopSound);
 //tracks.forEach(tracks => tracks.addEventListener('click', clickPauseSound));
 // window.addEventListener('click', clickPlaySound);
 
