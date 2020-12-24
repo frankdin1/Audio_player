@@ -1,3 +1,7 @@
+:root{
+  --control-bar-color: rgba(136, 108, 158, 0.952);
+}
+
 *{
   margin: 0;
   padding: 0;
@@ -6,49 +10,69 @@
 
 html {
   font-size: 10px;
-  background-size: cover; 
-  background-position: center;
-  background-image: url('Talking-drum.png');
-}
   
+}
+
 body {
   font-family: sans-serif;
   box-sizing: border-box;
 }
 
-.header{
-  width:100%;
+header{
   height: 6rem;
-  background-color: #fff;
+  width: 100rem;
+  background-color: var(--control-bar-color);
   margin:0 auto;
   display: flex;
-  justify-content: center;
+  justify-content:center;
+  align-items: center;
+  position:sticky;
+  top:0;
+}
+
+footer{
+  background-color: var(--control-bar-color);
+  height:6rem;
+  width: 100rem;
+  position:sticky;
+  bottom:0;
+  margin: 0 auto;
+  font-size: 30px;
+  text-align: center;
+}
+
+.music-controls{
+  margin:0 auto;
+  height: 5rem;
+  width: 12rem;
+  display:flex;
+  justify-content: space-evenly;
   align-items: center;
 }
 
-#pause{
+.music-control{
   height: 3rem;
   width: 4rem;
-  margin:0 auto;
+  /* margin:0 auto; */
   border:1px solid black;
   border-radius: .5rem;
 }
 
-#play{
-  height: 3rem;
-  width: 4rem;
-  margin:0 auto;
-  border:1px solid black;
-  border-radius: .5rem;
+#pause, #play, kbd, .key:hover{
+  cursor: pointer;
 }
 
 .hidden{
   display:none;
 }
-.keys{
+
+#keys{
   width:100rem;
-  height: 100rem;
+  height: 70rem;
   margin:0 auto;
+  background-size: cover; 
+  background-position: center;
+  background-image: url('Talking-drum.png');
   
 }
 
@@ -80,10 +104,12 @@ body {
 kbd {
   font-size: 2rem;
 }
-  
-/* .sound {
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: .1rem;
-  color: #ffc600;
-} */
+
+/* @media screen and (max-width: 1013px){
+  header{
+    width: 100rem;
+  }
+  footer{
+    width: 100rem;
+  }
+}  */
