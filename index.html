@@ -9,16 +9,17 @@
   <title>JS Music Portfolio</title>
 </head>
 <body>
-  <header class="header">
+  <header>
     <div class="music-controls">
       <button id="play" class="music-control"><i class="fa fa-play" aria-hidden="true"></i></button>
       <button id="pause" class="hidden music-control"><i class="fa fa-pause" aria-hidden="true"></i></button>
       <button id="stop" class="music-control"><i class="fas fa-stop"></i></button>
-    </div>
-    </header>
- 
+    </div>  
+  </header> 
+
+
 <!-- data-key is a  data atrribute similar to src or class -->
-  <div class="keys">
+  <div id="keys">
     <div data-key="65" class="key">
       <kbd id="Beat For Greg">Beat For Greg</kbd>
       <!-- <span class="sound">clap</span> -->
@@ -28,7 +29,7 @@
       <!-- <span class="sound">hihat</span> -->
     </div>
     <div data-key="68" class="key">
-      <kbd id="Hip Hop Reagea">Hip Hop Reagea</kbd>
+      <kbd id="Hip Hop Regea">Hip Hop Regea</kbd>
       <!-- <span class="sound">kick</span> -->
     </div>
     <div data-key="70" class="key">
@@ -67,8 +68,9 @@
       <kbd id="A Bigger Crowd">A Bigger Crowd</kbd>
       <!-- <span class="sound">Electronic African</span> -->
     </div>
-   
   </div>
+
+  <footer class="hidden"></footer>
 
   <div class="audio-tracks">
     <audio data-key="65" src="My_Tracks/Beat for Greg.mp3"></audio>
@@ -78,7 +80,7 @@
     <audio id="The Sound Of Africa" src="My_Tracks/The Sound Of Africa.mp3"></audio>
 
     <audio data-key="68" src="My_Tracks/Hip hop reagea.mp3"></audio>
-    <audio id="Hip Hop Reagea" src="My_Tracks/Hip hop reagea.mp3"></audio>
+    <audio id="Hip Hop Regea" src="My_Tracks/Hip hop reagea.mp3"></audio>
 
     <audio data-key="70" src="My_Tracks/dancehall 2.mp3"></audio>
     <audio id="Dancehall Track" src="My_Tracks/dancehall 2.mp3"></audio>
@@ -99,13 +101,13 @@
     <audio id="Hard" src="My_Tracks/Hard.mp3"></audio>
 
     <audio data-key="90" src="My_Tracks/Gotta be good.mp3"></audio>
-    <audio id="Gotta Be Good" class="tracks" src="My_Tracks/Gotta be good.mp3"></audio>
+    <audio id="Gotta Be Good" src="My_Tracks/Gotta be good.mp3"></audio>
 
     <audio data-key="76" src="My_Tracks/In my dreams.mp3"></audio>
     <audio id="In My Dreams" src="My_Tracks/In my dreams.mp3"></audio>
 
     <audio data-key="90" src="My_Tracks/A Bigger Crowd.wav"></audio>
-    <audio id="A Bigger Crowd" class="tracks" src="My_Tracks/A Bigger Crowd.wav"></audio>
+    <audio id="A Bigger Crowd" src="My_Tracks/A Bigger Crowd.wav"></audio>
   </div>
 <script rel="text/javascript" src="script.js"></script>
 </body>
