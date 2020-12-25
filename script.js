@@ -57,19 +57,24 @@ function controlSound(audio_track){
         play.classList.remove('hidden');
         pause.classList.add('hidden');
     }
+
+    // while (audio){
+    //     ontimeupdate = console.log(Math.floor(audio.currentTime));
+    // }
+    
+    audio_track.addEventListener('timeupdate', (event) => {
+        const currentTime = Math.floor(audio_track.currentTime);
+        const duration = Math.floor(audio_track.duration);
+        console.log(currentTime, duration);
+    }, false);
 }
 
 function keyPressSound (e){
-    // console.log(e);//this gives us the entire keypress object
-    //console.log(e.keyCode);//this gives us just the ascii character of the key that was pressed
     const audio = document.querySelector(`audio[data-key = "${e.keyCode}"]`)
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
-    //const key_2 = document.querySelector(`#${e.target.innerText}`)
-    //const key_3 = document.querySelector(`.sound`);
 
-    //console.log(this.key_3);
     if(!audio) return;//this stops the function from running
-    //audio.currentTime = 0;//this rewinds the playback to the start every time we hit the key
+       
     //audio.stop();
     
     key.classList.add('playing');
@@ -140,6 +145,7 @@ window.addEventListener('keydown', keyPressSound);
 pause.addEventListener('click', clickPauseSound);
 
 stop.addEventListener('click', clickStopSound);
+
 
 //now-playing.forEach(now-playing => now-playing.addEventListener('click', clickPauseSound));
 // window.addEventListener('click', clickPlaySound);
