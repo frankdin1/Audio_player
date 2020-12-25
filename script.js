@@ -8,7 +8,8 @@ const keys = document.querySelectorAll('.key');
 let currentTrack;//this will be a boolean
 const controller = document.querySelector('header');
 const footer = document.querySelector('footer');
-const now_playing = document.querySelector('#now-playing')
+const now_playing = document.querySelector('#now-playing');
+const track_time = document.querySelector('#track-time');
 
 function innerStopSound(audio){
     audio.pause();
@@ -61,26 +62,42 @@ function controlSound(audio_track){
     // while (audio){
     //     ontimeupdate = console.log(Math.floor(audio.currentTime));
     // }
-    
-    audio_track.addEventListener('timeupdate', (event) => {
-        const currentTime = Math.floor(audio_track.currentTime);
-        const duration = Math.floor(audio_track.duration);
-        console.log(currentTime, duration);
-    }, false);
 }
 
 function keyPressSound (e){
     const audio = document.querySelector(`audio[data-key = "${e.keyCode}"]`)
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
 
-    if(!audio) return;//this stops the function from running
-       
+    if(!audio) {
+        return;//this stops the function from running
+    }
     //audio.stop();
     
     key.classList.add('playing');
     footer.classList.remove('hidden');
     //console.log(key.firstElementChild.innerText)
     now_playing.innerText = `${key.firstElementChild.innerText}`;
+   
+    audio.addEventListener('timeupdate', (event) => {
+        const currentTime = Math.floor(audio.currentTime);
+        const duration = Math.floor(audio.duration);
+
+        function format_time(time){
+            let sec = Math.floor(time);
+            let min = Math.floor( sec / 60 );
+            if (min < 10) {
+                min = '0' + min;
+            }
+            sec = Math.floor( sec % 60 );
+            if (sec < 10) {
+                sec = '0' + sec;
+            }
+            return min + ":"+ sec;
+          }
+
+        track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
+    }, false);
+
     controlSound(audio);
     
 }
@@ -94,7 +111,7 @@ function clickTrackIcon (e){
     key.parentNode.classList.add('playing');
     footer.classList.remove('hidden');
     now_playing.innerText = `${key.innerText}`;
-    console
+
     controlSound(audio);
 }
     
