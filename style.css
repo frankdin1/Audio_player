@@ -30,35 +30,31 @@ header{
   top:0;
 }
 
-footer{
-  background-color: var(--control-bar-color);
-  height:6rem;
-  width: 100rem;
-  position:sticky;
-  bottom:0;
-  margin: 0 auto;
-  font-size: 30px;
-  text-align: center;
-}
-
 .music-controls{
   margin:0 auto;
   height: 5rem;
-  width: 12rem;
+  width: 30rem;
   display:flex;
   justify-content: space-evenly;
   align-items: center;
+  
 }
 
 .music-control{
-  height: 3rem;
-  width: 4rem;
+  height: 5rem;
+  width: 12rem;
   /* margin:0 auto; */
   border:1px solid black;
   border-radius: .5rem;
+  background: rgba(0,0,0,0.2);
+  border: none;
 }
 
-#pause, #play, kbd, .key:hover{
+.fa-play, .fa-pause, .fa-stop{
+  font-size: 20px;
+}
+
+#pause, #play, #stop, kbd, .key:hover{
   cursor: pointer;
 }
 
@@ -68,7 +64,7 @@ footer{
 
 #keys{
   width:100rem;
-  height: 70rem;
+  height: 72rem;
   margin:0 auto;
   background-size: cover; 
   background-position: center;
@@ -105,6 +101,42 @@ kbd {
   font-size: 2rem;
 }
 
+footer{
+  background-color: var(--control-bar-color);
+  height:6rem;
+  width: 100rem;
+  position:sticky;
+  bottom:0;
+  margin: 0 auto;
+  font-size: 30px;
+  text-align: center;
+  display:flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.fa-step-forward{
+  margin-left: 1rem;
+}
+
+.fa-step-backward{
+  margin-right: 1rem;
+}
+
+.fa-step-forward, .fa-step-backward{
+  cursor: pointer;
+}
+
+#now-playing{
+  float:left;
+  margin-left: 5rem;
+}
+
+/* .track-control{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
 /* @media screen and (max-width: 1013px){
   header{
     width: 100rem;

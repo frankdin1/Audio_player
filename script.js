@@ -8,6 +8,7 @@ const keys = document.querySelectorAll('.key');
 let currentTrack;//this will be a boolean
 const controller = document.querySelector('header');
 const footer = document.querySelector('footer');
+const now_playing = document.querySelector('#now-playing')
 
 function innerStopSound(audio){
     audio.pause();
@@ -74,7 +75,7 @@ function keyPressSound (e){
     key.classList.add('playing');
     footer.classList.remove('hidden');
     //console.log(key.firstElementChild.innerText)
-    footer.innerText = `${key.firstElementChild.innerText}`;
+    now_playing.innerText = `${key.firstElementChild.innerText}`;
     controlSound(audio);
     
 }
@@ -87,7 +88,7 @@ function clickTrackIcon (e){
     
     key.parentNode.classList.add('playing');
     footer.classList.remove('hidden');
-    footer.innerText = `${key.innerText}`;
+    now_playing.innerText = `${key.innerText}`;
     console
     controlSound(audio);
 }
