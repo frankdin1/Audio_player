@@ -60,7 +60,8 @@ function controlSound(audio_track){
 
     //each time the function is run, we either add or remove track
     //depending on what it was before
-    audio_track.classList.toggle('now-playing');
+    audio_track.classList.add('now-playing');
+    audio_track.currentTime = 0;
 
     if (audio_track.classList.contains('now-playing')){
         audio_track.classList.remove('paused')
@@ -68,11 +69,12 @@ function controlSound(audio_track){
         currentTrack = 'true';
 
     }
-    else{
-        audio_track.pause();
-        audio_track.classList.add('paused')
-        currentTrack = 'false';
-    }; 
+    // else{
+    //     audio_track.pause();
+    //     audio_track.classList.add('paused')
+    //     currentTrack = 'false';
+    // }; 
+    
     if (currentTrack === 'true'){
         local_play.classList.add('hidden');
         local_pause.classList.remove('hidden');
