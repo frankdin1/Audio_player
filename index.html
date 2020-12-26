@@ -11,8 +11,8 @@
 <body>
   <header>
     <div class="music-controls">
-      <button id="play" class="music-control"><i class="fa fa-play" aria-hidden="true"></i></button>
-      <button id="pause" class="hidden music-control"><i class="fa fa-pause" aria-hidden="true"></i></button>
+      <button id="play" class="music-control"><i class="fas fa-play" aria-hidden="true"></i></button>
+      <button id="pause" class="hidden music-control"><i class="fas fa-pause" aria-hidden="true"></i></button>
       <button id="stop" class="music-control"><i class="fas fa-stop"></i></button>
     </div>  
   </header> 
@@ -70,9 +70,11 @@
     </div>
   </div>
 
-  <footer class="hidden"><span id="now-playing"></span>
+  <footer class="hidden">
+    <span class="track-info" id="now-playing"></span>
+    <span class="track-info" id="track-time"></span>
     <div class="track-control">
-      <i class="fas fa-step-backward"></i><i class="fas fa-step-forward"></i></footer>
+      <i class="fas fa-step-backward"></i><i id="local-play" class="fas fa-play" aria-hidden="true"></i><i id="local-pause" class="fas fa-pause" aria-hidden="true"></i><i class="fas fa-step-forward"></i></footer>
     </div>
   <div class="audio-tracks">
     <audio data-key="65" src="My_Tracks/Beat for Greg.mp3"></audio>
