@@ -10,6 +10,21 @@ const controller = document.querySelector('header');
 const footer = document.querySelector('footer');
 const now_playing = document.querySelector('#now-playing');
 const track_time = document.querySelector('#track-time');
+const local_play = document.querySelector('#local-play');
+const local_pause = document.querySelector('#local-pause');
+
+function format_time(time){
+    let sec = Math.floor(time);
+    let min = Math.floor( sec / 60 );
+    if (min < 10) {
+        min = '0' + min;
+    }
+    sec = Math.floor( sec % 60 );
+    if (sec < 10) {
+        sec = '0' + sec;
+    }
+    return min + ":"+ sec;
+}
 
 function innerStopSound(audio){
     audio.pause();
@@ -18,6 +33,15 @@ function innerStopSound(audio){
     audio.classList.remove('now-playing')
     play.classList.remove('hidden');
     pause.classList.add('hidden'); 
+}
+
+function currentTrackInfo (audio_track){
+    audio_track.addEventListener('timeupdate', () => {
+            const currentTime = Math.floor(audio_track.currentTime);
+            const duration = Math.floor(audio_track.duration);
+            track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
+            console.log(audio_track);
+    }, false);
 }
 
 function controlSound(audio_track){
@@ -50,18 +74,14 @@ function controlSound(audio_track){
         currentTrack = 'false';
     }; 
     if (currentTrack === 'true'){
-        play.classList.add('hidden');
-        pause.classList.remove('hidden');
+        local_play.classList.add('hidden');
+        local_pause.classList.remove('hidden');
     }
 
     else{
-        play.classList.remove('hidden');
-        pause.classList.add('hidden');
+        local_play.classList.remove('hidden');
+        local_pause.classList.add('hidden');
     }
-
-    // while (audio){
-    //     ontimeupdate = console.log(Math.floor(audio.currentTime));
-    // }
 }
 
 function keyPressSound (e){
@@ -71,39 +91,18 @@ function keyPressSound (e){
     if(!audio) {
         return;//this stops the function from running
     }
-    //audio.stop();
     
     key.classList.add('playing');
     footer.classList.remove('hidden');
-    //console.log(key.firstElementChild.innerText)
     now_playing.innerText = `${key.firstElementChild.innerText}`;
-   
-    audio.addEventListener('timeupdate', (event) => {
-        const currentTime = Math.floor(audio.currentTime);
-        const duration = Math.floor(audio.duration);
 
-        function format_time(time){
-            let sec = Math.floor(time);
-            let min = Math.floor( sec / 60 );
-            if (min < 10) {
-                min = '0' + min;
-            }
-            sec = Math.floor( sec % 60 );
-            if (sec < 10) {
-                sec = '0' + sec;
-            }
-            return min + ":"+ sec;
-          }
-
-        track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
-    }, false);
+    currentTrackInfo(audio);
 
     controlSound(audio);
     
 }
 
 function clickTrackIcon (e){
-    //console.log(e.target.innerText)
     const audio = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio) return;
@@ -112,14 +111,15 @@ function clickTrackIcon (e){
     footer.classList.remove('hidden');
     now_playing.innerText = `${key.innerText}`;
 
+    currentTrackInfo(audio);
     controlSound(audio);
 }
     
 function clickPlaySound (){
     const audio = document.querySelector('.paused');
     audio.play();
-    play.classList.add('hidden');
-    pause.classList.remove('hidden');
+    local_play.classList.add('hidden');
+    local_pause.classList.remove('hidden');
     audio.classList.add('now-playing');
     //audio.classList.remove('paused');
 }
@@ -129,8 +129,8 @@ function clickPauseSound (){
     const audio = document.querySelector('.now-playing');
     //const key_2 = document.querySelector(`#${e.target.innerText}`)
     audio.pause();
-    play.classList.remove('hidden');
-    pause.classList.add('hidden');
+    local_play.classList.remove('hidden');
+    local_pause.classList.add('hidden');
     audio.classList.add('paused');
     audio.classList.remove('now-playing')
 //    key_2.parentNode.classList.add('playing');
@@ -155,11 +155,11 @@ for (let i = 0; i < keys.length; i++){
     keys[i].addEventListener('click', clickTrackIcon)
 }
 
-play.addEventListener('click', clickPlaySound);
+local_play.addEventListener('click', clickPlaySound);
 
 window.addEventListener('keydown', keyPressSound);
 // window.addEventListener('click', clickPlaySound);
-pause.addEventListener('click', clickPauseSound);
+local_pause.addEventListener('click', clickPauseSound);
 
 stop.addEventListener('click', clickStopSound);
 
