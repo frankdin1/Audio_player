@@ -36,6 +36,7 @@ function innerStopSound(audio){
 }
 
 function currentTrackInfo (audio_track){
+    //console.log(audio_track);
     audio_track.addEventListener('timeupdate', () => {
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
@@ -74,7 +75,7 @@ function controlSound(audio_track){
     //     audio_track.classList.add('paused')
     //     currentTrack = 'false';
     // }; 
-    
+
     if (currentTrack === 'true'){
         local_play.classList.add('hidden');
         local_pause.classList.remove('hidden');
@@ -108,7 +109,7 @@ function clickTrackIcon (e){
     const audio = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio) return;
-    
+    //console.log(audio)
     key.parentNode.classList.add('playing');
     footer.classList.remove('hidden');
     now_playing.innerText = `${key.innerText}`;
@@ -117,13 +118,63 @@ function clickTrackIcon (e){
     controlSound(audio);
 }
     
-function clickPlaySound (){
+function localPlaySound (){
     const audio = document.querySelector('.paused');
     audio.play();
     local_play.classList.add('hidden');
     local_pause.classList.remove('hidden');
     audio.classList.add('now-playing');
     //audio.classList.remove('paused');
+}
+
+function globalPlaySound (){
+     const playList = document.querySelectorAll('.tracks');
+    // let i = 0;
+    // let current = playList[0];
+    // let nextTrack = current.nextElementSibling
+    // current.play();
+    let playlist = Array.from(playList);    
+    function playNextSounds (playlist){
+        if(playlist.length > 0){
+            const audio = new Audio();
+            console.log(playlist);
+            audio.src = playlist[0].src;
+            //console.log(audio);
+            currentTrackInfo(audio)
+            audio.currentTime = 0;
+            audio.play();
+            playlist.shift();
+            audio.addEventListener('ended', function(){
+            playNextSounds(playlist);
+            })
+        }
+    }
+
+    playNextSounds(playlist);
+
+    // audio.src = playList[0];
+    // audio.play();
+    // for(let i = 0; i<audio.length; i++){
+    //     let currentTime = Math.floor(audio[i].currentTime);
+    //     const duration = Math.floor(audio[i].duration);
+        
+    //     console.log(currentTime, duration)
+        
+    // }
+
+    // const duration = [];
+    // audio[0].play();
+    // console.log('track start')
+    // console.log(audio[0].currentTime)
+    // console.log(Math.floor(audio[0].duration))
+    // for (let i = 0; i < audio.length; i++) {
+    //     let currentTime = Math.floor(audio[i].currentTime);
+    //     duration.push(Math.floor(audio[i].duration));
+    //     //console.log(duration)
+    //     setTimeout(function timer() {
+    //       console.log(`track ${i} done`);
+    //     }, (i+1) * duration[i]*1000);
+    // }
 }
 
 //we use the clickPauseSound function only on the pause button
@@ -157,7 +208,9 @@ for (let i = 0; i < keys.length; i++){
     keys[i].addEventListener('click', clickTrackIcon)
 }
 
-local_play.addEventListener('click', clickPlaySound);
+local_play.addEventListener('click', localPlaySound);
+
+play.addEventListener('click', globalPlaySound);
 
 window.addEventListener('keydown', keyPressSound);
 // window.addEventListener('click', clickPlaySound);
