@@ -13,6 +13,11 @@ const track_time = document.querySelector('#track-time');
 const local_play = document.querySelector('#local-play');
 const local_pause = document.querySelector('#local-pause');
 
+function showPauseButton(){
+    local_play.classList.add('hidden');
+    local_pause.classList.remove('hidden');
+}
+
 function format_time(time){
     let sec = Math.floor(time);
     let min = Math.floor( sec / 60 );
@@ -41,8 +46,29 @@ function currentTrackInfo (audio_track){
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
             track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
-            console.log(audio_track);
+            //console.log(audio_track);
     }, false);
+}
+
+function controlGlobalSound(audio_track){
+    audio_track.classList.add('now-playing');
+    audio_track.currentTime = 0;
+
+    if (audio_track.classList.contains('now-playing')){
+        audio_track.classList.remove('paused')
+        audio_track.play();
+        currentTrack = 'true';
+    } 
+
+    if (currentTrack === 'true'){
+        local_play.classList.add('hidden');
+        local_pause.classList.remove('hidden');
+    }
+
+    else{
+        local_play.classList.remove('hidden');
+        local_pause.classList.add('hidden');
+    }
 }
 
 function controlSound(audio_track){
@@ -121,28 +147,22 @@ function clickTrackIcon (e){
 function localPlaySound (){
     const audio = document.querySelector('.paused');
     audio.play();
-    local_play.classList.add('hidden');
-    local_pause.classList.remove('hidden');
+    showPauseButton();
     audio.classList.add('now-playing');
     //audio.classList.remove('paused');
 }
 
 function globalPlaySound (){
-     const playList = document.querySelectorAll('.tracks');
-    // let i = 0;
-    // let current = playList[0];
-    // let nextTrack = current.nextElementSibling
-    // current.play();
+    const playList = document.querySelectorAll('.tracks');
     let playlist = Array.from(playList);    
     function playNextSounds (playlist){
         if(playlist.length > 0){
             const audio = new Audio();
-            console.log(playlist);
             audio.src = playlist[0].src;
-            //console.log(audio);
-            currentTrackInfo(audio)
-            audio.currentTime = 0;
-            audio.play();
+            footer.classList.remove('hidden');
+            now_playing.innerText = `${playlist[0].innerText}`;
+            currentTrackInfo(playlist[0])
+            controlGlobalSound(playlist[0])
             playlist.shift();
             audio.addEventListener('ended', function(){
             playNextSounds(playlist);
@@ -151,30 +171,6 @@ function globalPlaySound (){
     }
 
     playNextSounds(playlist);
-
-    // audio.src = playList[0];
-    // audio.play();
-    // for(let i = 0; i<audio.length; i++){
-    //     let currentTime = Math.floor(audio[i].currentTime);
-    //     const duration = Math.floor(audio[i].duration);
-        
-    //     console.log(currentTime, duration)
-        
-    // }
-
-    // const duration = [];
-    // audio[0].play();
-    // console.log('track start')
-    // console.log(audio[0].currentTime)
-    // console.log(Math.floor(audio[0].duration))
-    // for (let i = 0; i < audio.length; i++) {
-    //     let currentTime = Math.floor(audio[i].currentTime);
-    //     duration.push(Math.floor(audio[i].duration));
-    //     //console.log(duration)
-    //     setTimeout(function timer() {
-    //       console.log(`track ${i} done`);
-    //     }, (i+1) * duration[i]*1000);
-    // }
 }
 
 //we use the clickPauseSound function only on the pause button
@@ -230,45 +226,4 @@ function removeTransition (e){
 
 
 //we use forEach to listen for an event on each key press
-keys.forEach(key => key.addEventListener('transitionend', removeTransition))//the function removeTransition is run when the transition ends
-
-
-//sticky navigation
-
-// const initialCoords = audio_keys.getBoundingClientRect();
-// console.log(initialCoords);
-
-// window.addEventListener('scroll', function(){
-//     console.log(window.scrollY);
-
-//     if(window.scrollY > initialCoords.top){
-//         controller.classList.add('sticky');
-//         // current_track.classList.add('sticky');
-//     }
-//     else{
-//         controller.classList.remove('sticky');
-//         // current_track.classList.remove('sticky');        
-//     }
-// })
-
-
-
-// const stickyNav = function(entries){
-//     const [entry] = entries;
-//     console.log(entry);
-    
-//     if(!entry.isIntersecting){
-//         header.classList.add('sticky');
-//     }
-//     else{
-//         header.classList.remove('sticky');
-//     }
-// }
-
-// const obsOptions = {
-//     root:null,
-//     threshold: 0.5,
-// }
-
-// const audio_keysObserver = new IntersectionObserver (stickyNav, obsOptions);
-// audio_keysObserver.observe(audio_keys);
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));//the function removeTransition is run when the transition ends
