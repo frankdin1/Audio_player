@@ -54,7 +54,7 @@ header{
   font-size: 20px;
 }
 
-#pause, #play, #stop, kbd, .key:hover{
+#pause, #play, #stop, kbd, .key:hover, .fas{
   cursor: pointer;
 }
 
@@ -123,20 +123,17 @@ footer{
   margin-right: 1rem;
 }
 
-.fa-step-forward, .fa-step-backward{
-  cursor: pointer;
-}
-
 #now-playing{
   float:left;
   margin-left: 5rem;
 }
 
-/* .track-control{
-  display: flex;
-  justify-content: center;
+
+.track-control{
+  display:flex;
   align-items: center;
-} */
+}
+
 /* @media screen and (max-width: 1013px){
   header{
     width: 100rem;

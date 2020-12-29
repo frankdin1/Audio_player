@@ -5,7 +5,7 @@ const play = document.getElementById('play');
 const stop = document.getElementById('stop');
 let audio_keys = document.getElementById('keys');
 const keys = document.querySelectorAll('.key');
-let currentTrack;//this will be a boolean
+let currentTrack;
 const controller = document.querySelector('header');
 const footer = document.querySelector('footer');
 const now_playing = document.querySelector('#now-playing');
@@ -41,18 +41,19 @@ function innerStopSound(audio){
 }
 
 function currentTrackInfo (audio_track){
-    //console.log(audio_track);
     audio_track.addEventListener('timeupdate', () => {
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
             track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
-            //console.log(audio_track);
     }, false);
 }
 
 function controlGlobalSound(audio_track){
     audio_track.classList.add('now-playing');
     audio_track.currentTime = 0;
+
+    footer.classList.remove('hidden');
+    now_playing.innerText = `${audio_track.innerText}`;
 
     if (audio_track.classList.contains('now-playing')){
         audio_track.classList.remove('paused')
@@ -96,11 +97,6 @@ function controlSound(audio_track){
         currentTrack = 'true';
 
     }
-    // else{
-    //     audio_track.pause();
-    //     audio_track.classList.add('paused')
-    //     currentTrack = 'false';
-    // }; 
 
     if (currentTrack === 'true'){
         local_play.classList.add('hidden');
@@ -135,7 +131,7 @@ function clickTrackIcon (e){
     const audio = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio) return;
-    //console.log(audio)
+    
     key.parentNode.classList.add('playing');
     footer.classList.remove('hidden');
     now_playing.innerText = `${key.innerText}`;
@@ -149,55 +145,38 @@ function localPlaySound (){
     audio.play();
     showPauseButton();
     audio.classList.add('now-playing');
-    //audio.classList.remove('paused');
 }
 
 function globalPlaySound (){
     const playList = document.querySelectorAll('.tracks');
     let playlist = Array.from(playList);    
-    function playNextSounds (playlist){
+    function playAllTracks (playlist){
         if(playlist.length > 0){
             const audio = new Audio();
             audio.src = playlist[0].src;
-            footer.classList.remove('hidden');
-            now_playing.innerText = `${playlist[0].innerText}`;
+            
             currentTrackInfo(playlist[0])
             controlGlobalSound(playlist[0])
+            
             playlist.shift();
+
             audio.addEventListener('ended', function(){
-            playNextSounds(playlist);
+                playAllTracks(playlist);
             })
         }
     }
 
-    playNextSounds(playlist);
+    playAllTracks(playlist);
 }
 
 //we use the clickPauseSound function only on the pause button
 function clickPauseSound (){
     const audio = document.querySelector('.now-playing');
-    //const key_2 = document.querySelector(`#${e.target.innerText}`)
     audio.pause();
     local_play.classList.remove('hidden');
     local_pause.classList.add('hidden');
     audio.classList.add('paused');
     audio.classList.remove('now-playing')
-//    key_2.parentNode.classList.add('playing');
-}
-
-function clickStopSound (){
-    const audio_1= document.querySelector('.now-playing');
-    const audio_2= document.querySelector('.paused');
-    let audio;
-    //const key_2 = document.querySelector(`#${e.target.innerText}`)
-    if (audio_1 === null){
-        audio = audio_2;
-    }
-    else audio = audio_1;
-
-    innerStopSound(audio);
-    
-//    key_2.parentNode.classList.add('playing');
 }
 
 for (let i = 0; i < keys.length; i++){
@@ -209,14 +188,8 @@ local_play.addEventListener('click', localPlaySound);
 play.addEventListener('click', globalPlaySound);
 
 window.addEventListener('keydown', keyPressSound);
-// window.addEventListener('click', clickPlaySound);
+
 local_pause.addEventListener('click', clickPauseSound);
-
-stop.addEventListener('click', clickStopSound);
-
-
-//now-playing.forEach(now-playing => now-playing.addEventListener('click', clickPauseSound));
-// window.addEventListener('click', clickPlaySound);
 
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
