@@ -114,7 +114,6 @@ function controlSound(audio_track){
         currentTrack = 'true';
 
     }
-
     if (currentTrack === 'true'){
         local_play.classList.add('hidden');
         local_pause.classList.remove('hidden');
@@ -189,11 +188,6 @@ function globalPlaySound (){
 //we use the clickPauseSound function only on the pause button
 function clickPauseSound (){
     const audio = document.querySelector('.now-playing');
-    
-    //let currentAudio = document.querySelector('now-playing');
-    let nextTrack = audio.nextElementSibling;
-    let nextTwoTracks = nextTrack.nextElementSibling
-    console.log(nextTwoTracks);
 
     audio.pause();
     local_play.classList.remove('hidden');
@@ -215,6 +209,7 @@ window.addEventListener('keydown', keyPressSound);
 local_pause.addEventListener('click', clickPauseSound);
 
 next.addEventListener('click', clickNext)
+
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
     if (e.propertyName !== 'transform') return;//this skips the event if it's not a transform event
