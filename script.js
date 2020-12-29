@@ -12,6 +12,23 @@ const now_playing = document.querySelector('#now-playing');
 const track_time = document.querySelector('#track-time');
 const local_play = document.querySelector('#local-play');
 const local_pause = document.querySelector('#local-pause');
+const next = document.querySelector('.fa-step-forward')
+
+function clickNext (){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+    let nextTrack;
+    if (audio === null){
+        nextTrack = audio_2.nextElementSibling;
+    }
+    else if(audio_2 === null){
+        nextTrack = audio.nextElementSibling;
+    }
+
+    let nextTwoTracks = nextTrack.nextElementSibling
+    controlSound(nextTwoTracks)
+    //console.log(nextTwoTracks);
+}
 
 function showPauseButton(){
     local_play.classList.add('hidden');
@@ -172,6 +189,12 @@ function globalPlaySound (){
 //we use the clickPauseSound function only on the pause button
 function clickPauseSound (){
     const audio = document.querySelector('.now-playing');
+    
+    //let currentAudio = document.querySelector('now-playing');
+    let nextTrack = audio.nextElementSibling;
+    let nextTwoTracks = nextTrack.nextElementSibling
+    console.log(nextTwoTracks);
+
     audio.pause();
     local_play.classList.remove('hidden');
     local_pause.classList.add('hidden');
@@ -191,6 +214,7 @@ window.addEventListener('keydown', keyPressSound);
 
 local_pause.addEventListener('click', clickPauseSound);
 
+next.addEventListener('click', clickNext)
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
     if (e.propertyName !== 'transform') return;//this skips the event if it's not a transform event
