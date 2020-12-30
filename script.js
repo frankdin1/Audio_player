@@ -13,21 +13,44 @@ const track_time = document.querySelector('#track-time');
 const local_play = document.querySelector('#local-play');
 const local_pause = document.querySelector('#local-pause');
 const next = document.querySelector('.fa-step-forward')
+const previous = document.querySelector('.fa-step-backward')
+ 
+function showTrackTitle(audio_track){
+    footer.classList.remove('hidden');
+    now_playing.innerText = `${audio_track.innerText}`;
+}
 
-function clickNext (){
+function nextTrack (){
     let audio = document.querySelector('.now-playing')
     let audio_2 = document.querySelector('.paused')
-    let nextTrack;
+    let nextSibling;
     if (audio === null){
-        nextTrack = audio_2.nextElementSibling;
+        nextSibling = audio_2.nextElementSibling;
     }
     else if(audio_2 === null){
-        nextTrack = audio.nextElementSibling;
+        nextSibling = audio.nextElementSibling;
     }
 
-    let nextTwoTracks = nextTrack.nextElementSibling
-    controlSound(nextTwoTracks)
-    //console.log(nextTwoTracks);
+    let siblingAfterNext = nextSibling.nextElementSibling
+    controlSound(siblingAfterNext)
+    currentTrackInfo(siblingAfterNext)
+    //console.log(siblingAfterNext);
+}
+
+function previousTrack (){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+    let previousSibling;
+    if (audio === null){
+        previousSibling = audio_2.previousElementSibling;
+    }
+    else if(audio_2 === null){
+        previousSibling = audio.previousElementSibling;
+    }
+
+    let siblingBeforeLast = nextTrack.previousElementSibling
+    controlSound(siblingBeforeLast)
+    currentTrackInfo(siblingBeforeLast)
 }
 
 function showPauseButton(){
@@ -68,9 +91,8 @@ function currentTrackInfo (audio_track){
 function controlGlobalSound(audio_track){
     audio_track.classList.add('now-playing');
     audio_track.currentTime = 0;
-
-    footer.classList.remove('hidden');
-    now_playing.innerText = `${audio_track.innerText}`;
+    
+    showTrackTitle(audio_track)
 
     if (audio_track.classList.contains('now-playing')){
         audio_track.classList.remove('paused')
@@ -92,6 +114,8 @@ function controlGlobalSound(audio_track){
 function controlSound(audio_track){
     //every line of code in this function will happen each time function is run
     //either by clicking a track icon or by pressing a key
+
+    showTrackTitle(audio_track);
 
     [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the node list which we can then loop through    
         //for every audio track on which the event handler wasn't called
@@ -208,7 +232,9 @@ window.addEventListener('keydown', keyPressSound);
 
 local_pause.addEventListener('click', clickPauseSound);
 
-next.addEventListener('click', clickNext)
+next.addEventListener('click', nextTrack)
+
+previous.addEventListener('click', previousTrack)
 
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
