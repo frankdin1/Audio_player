@@ -14,7 +14,33 @@ const local_play = document.querySelector('#local-play');
 const local_pause = document.querySelector('#local-pause');
 const next = document.querySelector('.fa-step-forward')
 const previous = document.querySelector('.fa-step-backward')
- 
+const fast_forward = document.querySelector('.fa-fast-forward')
+const fast_backward = document.querySelector('.fa-fast-backward')
+
+function fastForward(){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+
+    if (audio === null){
+        audio_2.currentTime += 10;
+    }
+    else if(audio_2 === null){
+        audio.currentTime += 10;
+    }
+}
+
+function fastBackward(){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+
+    if (audio === null){
+        audio_2.currentTime -= 10;
+    }
+    else if(audio_2 === null){
+        audio.currentTime -= 10;
+    }
+}
+
 function showTrackTitle(audio_track){
     footer.classList.remove('hidden');
     now_playing.innerText = `${audio_track.innerText}`;
@@ -34,7 +60,6 @@ function nextTrack (){
     let siblingAfterNext = nextSibling.nextElementSibling
     controlSound(siblingAfterNext)
     currentTrackInfo(siblingAfterNext)
-    //console.log(siblingAfterNext);
 }
 
 function previousTrack (){
@@ -48,7 +73,7 @@ function previousTrack (){
         previousSibling = audio.previousElementSibling;
     }
 
-    let siblingBeforeLast = nextTrack.previousElementSibling
+    let siblingBeforeLast = previousSibling.previousElementSibling
     controlSound(siblingBeforeLast)
     currentTrackInfo(siblingBeforeLast)
 }
@@ -194,9 +219,8 @@ function globalPlaySound (){
         if(playlist.length > 0){
             const audio = new Audio();
             audio.src = playlist[0].src;
-            
             currentTrackInfo(playlist[0])
-            controlGlobalSound(playlist[0])
+            controlSound(playlist[0])
             
             playlist.shift();
 
@@ -235,6 +259,10 @@ local_pause.addEventListener('click', clickPauseSound);
 next.addEventListener('click', nextTrack)
 
 previous.addEventListener('click', previousTrack)
+
+fast_forward.addEventListener('click', fastForward)
+
+fast_backward.addEventListener('click', fastBackward)
 
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
