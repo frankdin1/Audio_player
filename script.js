@@ -121,6 +121,8 @@ function innerStopSound(audio){
 }
 
 function currentTrackInfo (audio_track){
+    showTrackTitle(audio_track);
+
     audio_track.addEventListener('timeupdate', () => {
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
@@ -131,7 +133,8 @@ function currentTrackInfo (audio_track){
 function controlSound(audio_track){
     //every line of code in this function will happen each time function is run
     //either by clicking a track icon or by pressing a key
-    showTrackTitle(audio_track);
+    //showTrackTitle(audio_track);
+    currentTrackInfo(audio_track);
 
     [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the node list which we can then loop through    
         //for every audio track on which the event handler wasn't called
@@ -169,7 +172,9 @@ function controlSound(audio_track){
 
     audio_track.addEventListener('ended', function(){
         console.log(`${audio_track.innerText} had ended!`)
-        if(next_track) next_track.play()
+        if(next_track) {
+            controlSound(next_track)
+        }
         else return
     })
 
@@ -217,23 +222,26 @@ function globalPlaySound (){
     const playList = document.querySelectorAll('.tracks');
     let playlist = Array.from(playList);  
 
-    function playAllTracks (playlist){
-        if(playlist.length > 0){
-            const audio = new Audio();
-            audio.src = playlist[0].src;
-            currentTrackInfo(playlist[0])
-            controlSound(playlist[0])
-            
-            playlist.shift();
+    //currentTrackInfo(playlist[0])
+    controlSound(playlist[0])
 
-            audio.addEventListener('ended', function(){
-                console.log("track has ended")
-                playAllTracks(playlist);
-            })
-        }
-    }
+    // function playAllTracks (playlist){
+    //     if(playlist.length > 0){
+    //         console.log(playlist)
+    //         const audio = new Audio();
+    //         audio.src = playlist[0].src;
+    //         currentTrackInfo(playlist[0])
+    //         controlSound(playlist[0])
 
-    playAllTracks(playlist);
+    //         playlist.shift();
+    //         // audio.addEventListener('ended', function(){
+    //         //     console.log("track has ended")
+    //         //     playAllTracks(playlist);
+    //         // })
+    //     }
+    // }
+
+    // playAllTracks(playlist);
 }
 
 //we use the clickPauseSound function only on the pause button
