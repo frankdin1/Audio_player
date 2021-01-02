@@ -60,22 +60,37 @@ function nextTrack (){
     let siblingAfterNext = nextSibling.nextElementSibling
     controlSound(siblingAfterNext)
     currentTrackInfo(siblingAfterNext)
+
+}
+
+function playingOrPaused(audio_track){
+    let previousSibling = audio_track.previousElementSibling;
+    let siblingBeforeLast = previousSibling.previousElementSibling
+
+    if (Math.floor(audio_track.currentTime) <= 2 && siblingBeforeLast){
+        controlSound(siblingBeforeLast)
+        currentTrackInfo(siblingBeforeLast)
+    }
+    else if (Math.floor(audio_track.currentTime) <= 2 && !siblingBeforeLast){
+        audio_track.currentTime = 0;
+        controlSound(audio_track)
+        currentTrackInfo(audio_track)
+    }
+    else if (audio_track.currentTime > 2){
+        audio_track.currentTime = 0;
+    }
 }
 
 function previousTrack (){
     let audio = document.querySelector('.now-playing')
     let audio_2 = document.querySelector('.paused')
-    let previousSibling;
-    if (audio === null){
-        previousSibling = audio_2.previousElementSibling;
-    }
-    else if(audio_2 === null){
-        previousSibling = audio.previousElementSibling;
-    }
 
-    let siblingBeforeLast = previousSibling.previousElementSibling
-    controlSound(siblingBeforeLast)
-    currentTrackInfo(siblingBeforeLast)
+    if (audio){
+        playingOrPaused(audio);
+    }
+    else if (audio_2){
+        playingOrPaused(audio_2);
+    }
 }
 
 function showPauseButton(){
@@ -110,36 +125,12 @@ function currentTrackInfo (audio_track){
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
             track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
-    }, false);
-}
-
-function controlGlobalSound(audio_track){
-    audio_track.classList.add('now-playing');
-    audio_track.currentTime = 0;
-    
-    showTrackTitle(audio_track)
-
-    if (audio_track.classList.contains('now-playing')){
-        audio_track.classList.remove('paused')
-        audio_track.play();
-        currentTrack = 'true';
-    } 
-
-    if (currentTrack === 'true'){
-        local_play.classList.add('hidden');
-        local_pause.classList.remove('hidden');
-    }
-
-    else{
-        local_play.classList.remove('hidden');
-        local_pause.classList.add('hidden');
-    }
+        }, false);
 }
 
 function controlSound(audio_track){
     //every line of code in this function will happen each time function is run
     //either by clicking a track icon or by pressing a key
-
     showTrackTitle(audio_track);
 
     [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the node list which we can then loop through    
@@ -172,6 +163,16 @@ function controlSound(audio_track){
         local_play.classList.remove('hidden');
         local_pause.classList.add('hidden');
     }
+
+    let next_track = audio_track.nextElementSibling.nextElementSibling
+    console.log(next_track);
+
+    audio_track.addEventListener('ended', function(){
+        console.log(`${audio_track.innerText} had ended!`)
+        if(next_track) next_track.play()
+        else return
+    })
+
 }
 
 function keyPressSound (e){
@@ -214,7 +215,8 @@ function localPlaySound (){
 
 function globalPlaySound (){
     const playList = document.querySelectorAll('.tracks');
-    let playlist = Array.from(playList);    
+    let playlist = Array.from(playList);  
+
     function playAllTracks (playlist){
         if(playlist.length > 0){
             const audio = new Audio();
@@ -225,6 +227,7 @@ function globalPlaySound (){
             playlist.shift();
 
             audio.addEventListener('ended', function(){
+                console.log("track has ended")
                 playAllTracks(playlist);
             })
         }
