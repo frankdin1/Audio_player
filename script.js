@@ -5,13 +5,98 @@ const play = document.getElementById('play');
 const stop = document.getElementById('stop');
 let audio_keys = document.getElementById('keys');
 const keys = document.querySelectorAll('.key');
-let currentTrack;//this will be a boolean
+let currentTrack;
 const controller = document.querySelector('header');
 const footer = document.querySelector('footer');
 const now_playing = document.querySelector('#now-playing');
 const track_time = document.querySelector('#track-time');
 const local_play = document.querySelector('#local-play');
 const local_pause = document.querySelector('#local-pause');
+const next = document.querySelector('.fa-step-forward')
+const previous = document.querySelector('.fa-step-backward')
+const fast_forward = document.querySelector('.fa-fast-forward')
+const fast_backward = document.querySelector('.fa-fast-backward')
+
+function fastForward(){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+
+    if (audio === null){
+        audio_2.currentTime += 10;
+    }
+    else if(audio_2 === null){
+        audio.currentTime += 10;
+    }
+}
+
+function fastBackward(){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+
+    if (audio === null){
+        audio_2.currentTime -= 10;
+    }
+    else if(audio_2 === null){
+        audio.currentTime -= 10;
+    }
+}
+
+function showTrackTitle(audio_track){
+    footer.classList.remove('hidden');
+    now_playing.innerText = `${audio_track.innerText}`;
+}
+
+function nextTrack (){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+    let nextSibling;
+    if (audio === null){
+        nextSibling = audio_2.nextElementSibling;
+    }
+    else if(audio_2 === null){
+        nextSibling = audio.nextElementSibling;
+    }
+
+    let siblingAfterNext = nextSibling.nextElementSibling
+    controlSound(siblingAfterNext)
+    currentTrackInfo(siblingAfterNext)
+
+}
+
+function playingOrPaused(audio_track){
+    let previousSibling = audio_track.previousElementSibling;
+    let siblingBeforeLast = previousSibling.previousElementSibling
+
+    if (Math.floor(audio_track.currentTime) <= 2 && siblingBeforeLast){
+        controlSound(siblingBeforeLast)
+        currentTrackInfo(siblingBeforeLast)
+    }
+    else if (Math.floor(audio_track.currentTime) <= 2 && !siblingBeforeLast){
+        audio_track.currentTime = 0;
+        controlSound(audio_track)
+        currentTrackInfo(audio_track)
+    }
+    else if (audio_track.currentTime > 2){
+        audio_track.currentTime = 0;
+    }
+}
+
+function previousTrack (){
+    let audio = document.querySelector('.now-playing')
+    let audio_2 = document.querySelector('.paused')
+
+    if (audio){
+        playingOrPaused(audio);
+    }
+    else if (audio_2){
+        playingOrPaused(audio_2);
+    }
+}
+
+function showPauseButton(){
+    local_play.classList.add('hidden');
+    local_pause.classList.remove('hidden');
+}
 
 function format_time(time){
     let sec = Math.floor(time);
@@ -36,18 +121,20 @@ function innerStopSound(audio){
 }
 
 function currentTrackInfo (audio_track){
-    //console.log(audio_track);
+    showTrackTitle(audio_track);
+
     audio_track.addEventListener('timeupdate', () => {
             const currentTime = Math.floor(audio_track.currentTime);
             const duration = Math.floor(audio_track.duration);
             track_time.innerText = `${format_time(currentTime)} / ${format_time(duration)}`;
-            console.log(audio_track);
-    }, false);
+        }, false);
 }
 
 function controlSound(audio_track){
     //every line of code in this function will happen each time function is run
     //either by clicking a track icon or by pressing a key
+    //showTrackTitle(audio_track);
+    currentTrackInfo(audio_track);
 
     [...audio_track.parentElement.children].forEach(function (e) {//the spread operator creates an array from the node list which we can then loop through    
         //for every audio track on which the event handler wasn't called
@@ -70,12 +157,6 @@ function controlSound(audio_track){
         currentTrack = 'true';
 
     }
-    // else{
-    //     audio_track.pause();
-    //     audio_track.classList.add('paused')
-    //     currentTrack = 'false';
-    // }; 
-
     if (currentTrack === 'true'){
         local_play.classList.add('hidden');
         local_pause.classList.remove('hidden');
@@ -85,6 +166,18 @@ function controlSound(audio_track){
         local_play.classList.remove('hidden');
         local_pause.classList.add('hidden');
     }
+
+    let next_track = audio_track.nextElementSibling.nextElementSibling
+    console.log(next_track);
+
+    audio_track.addEventListener('ended', function(){
+        console.log(`${audio_track.innerText} had ended!`)
+        if(next_track) {
+            controlSound(next_track)
+        }
+        else return
+    })
+
 }
 
 function keyPressSound (e){
@@ -109,7 +202,7 @@ function clickTrackIcon (e){
     const audio = document.querySelector(`audio[id = "${e.target.innerText}"]`)
     const key = document.querySelector(`kbd[id = "${e.target.innerText}"]`)
     if(!audio) return;
-    //console.log(audio)
+    
     key.parentNode.classList.add('playing');
     footer.classList.remove('hidden');
     now_playing.innerText = `${key.innerText}`;
@@ -121,87 +214,45 @@ function clickTrackIcon (e){
 function localPlaySound (){
     const audio = document.querySelector('.paused');
     audio.play();
-    local_play.classList.add('hidden');
-    local_pause.classList.remove('hidden');
+    showPauseButton();
     audio.classList.add('now-playing');
-    //audio.classList.remove('paused');
 }
 
 function globalPlaySound (){
-     const playList = document.querySelectorAll('.tracks');
-    // let i = 0;
-    // let current = playList[0];
-    // let nextTrack = current.nextElementSibling
-    // current.play();
-    let playlist = Array.from(playList);    
-    function playNextSounds (playlist){
-        if(playlist.length > 0){
-            const audio = new Audio();
-            console.log(playlist);
-            audio.src = playlist[0].src;
-            //console.log(audio);
-            currentTrackInfo(audio)
-            audio.currentTime = 0;
-            audio.play();
-            playlist.shift();
-            audio.addEventListener('ended', function(){
-            playNextSounds(playlist);
-            })
-        }
-    }
+    const playList = document.querySelectorAll('.tracks');
+    let playlist = Array.from(playList);  
 
-    playNextSounds(playlist);
+    //currentTrackInfo(playlist[0])
+    controlSound(playlist[0])
 
-    // audio.src = playList[0];
-    // audio.play();
-    // for(let i = 0; i<audio.length; i++){
-    //     let currentTime = Math.floor(audio[i].currentTime);
-    //     const duration = Math.floor(audio[i].duration);
-        
-    //     console.log(currentTime, duration)
-        
+    // function playAllTracks (playlist){
+    //     if(playlist.length > 0){
+    //         console.log(playlist)
+    //         const audio = new Audio();
+    //         audio.src = playlist[0].src;
+    //         currentTrackInfo(playlist[0])
+    //         controlSound(playlist[0])
+
+    //         playlist.shift();
+    //         // audio.addEventListener('ended', function(){
+    //         //     console.log("track has ended")
+    //         //     playAllTracks(playlist);
+    //         // })
+    //     }
     // }
 
-    // const duration = [];
-    // audio[0].play();
-    // console.log('track start')
-    // console.log(audio[0].currentTime)
-    // console.log(Math.floor(audio[0].duration))
-    // for (let i = 0; i < audio.length; i++) {
-    //     let currentTime = Math.floor(audio[i].currentTime);
-    //     duration.push(Math.floor(audio[i].duration));
-    //     //console.log(duration)
-    //     setTimeout(function timer() {
-    //       console.log(`track ${i} done`);
-    //     }, (i+1) * duration[i]*1000);
-    // }
+    // playAllTracks(playlist);
 }
 
 //we use the clickPauseSound function only on the pause button
 function clickPauseSound (){
     const audio = document.querySelector('.now-playing');
-    //const key_2 = document.querySelector(`#${e.target.innerText}`)
+
     audio.pause();
     local_play.classList.remove('hidden');
     local_pause.classList.add('hidden');
     audio.classList.add('paused');
     audio.classList.remove('now-playing')
-//    key_2.parentNode.classList.add('playing');
-}
-
-function clickStopSound (){
-    const audio_1= document.querySelector('.now-playing');
-    const audio_2= document.querySelector('.paused');
-    let audio;
-    //const key_2 = document.querySelector(`#${e.target.innerText}`)
-    if (audio_1 === null){
-        audio = audio_2;
-    }
-    else audio = audio_1;
-
-    innerStopSound(audio);
-    
-//    key_2.parentNode.classList.add('playing');
 }
 
 for (let i = 0; i < keys.length; i++){
@@ -213,14 +264,16 @@ local_play.addEventListener('click', localPlaySound);
 play.addEventListener('click', globalPlaySound);
 
 window.addEventListener('keydown', keyPressSound);
-// window.addEventListener('click', clickPlaySound);
+
 local_pause.addEventListener('click', clickPauseSound);
 
-stop.addEventListener('click', clickStopSound);
+next.addEventListener('click', nextTrack)
 
+previous.addEventListener('click', previousTrack)
 
-//now-playing.forEach(now-playing => now-playing.addEventListener('click', clickPauseSound));
-// window.addEventListener('click', clickPlaySound);
+fast_forward.addEventListener('click', fastForward)
+
+fast_backward.addEventListener('click', fastBackward)
 
 //the removeTransition function takes an event as parameter
 function removeTransition (e){
@@ -230,45 +283,4 @@ function removeTransition (e){
 
 
 //we use forEach to listen for an event on each key press
-keys.forEach(key => key.addEventListener('transitionend', removeTransition))//the function removeTransition is run when the transition ends
-
-
-//sticky navigation
-
-// const initialCoords = audio_keys.getBoundingClientRect();
-// console.log(initialCoords);
-
-// window.addEventListener('scroll', function(){
-//     console.log(window.scrollY);
-
-//     if(window.scrollY > initialCoords.top){
-//         controller.classList.add('sticky');
-//         // current_track.classList.add('sticky');
-//     }
-//     else{
-//         controller.classList.remove('sticky');
-//         // current_track.classList.remove('sticky');        
-//     }
-// })
-
-
-
-// const stickyNav = function(entries){
-//     const [entry] = entries;
-//     console.log(entry);
-    
-//     if(!entry.isIntersecting){
-//         header.classList.add('sticky');
-//     }
-//     else{
-//         header.classList.remove('sticky');
-//     }
-// }
-
-// const obsOptions = {
-//     root:null,
-//     threshold: 0.5,
-// }
-
-// const audio_keysObserver = new IntersectionObserver (stickyNav, obsOptions);
-// audio_keysObserver.observe(audio_keys);
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));//the function removeTransition is run when the transition ends
